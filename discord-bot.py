@@ -7,8 +7,8 @@ import re
 import youtube_dl
 import os
 import random as rd
+from PIL import Image, ImageFont, ImageDraw
 # import datetime
-# import asyncio
 
 
 # Prefix set up
@@ -80,8 +80,27 @@ async def on_ready():
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.competing, name="Vandyck#7726 兄ちゃん戦争"))
 
 
+# Welcome Card
+@client.event()
+async def on_member_join(member):
+    guild = client.get_guild(852085478659457035)
+    channel = guild.get_channel(852085478659457042)
+
+    img = Image.open("Pynata Cover.png")
+    member_im = Image.open(requests.get(member.avatar_url, stream=True).raw)
+    img.paste(member_im, (1150/2, 669/3))
+    msg = f"Welcome\n{member.name}"
+    draw = ImageDraw.Draw(img)
+    magistra = ImageFont.truetype("MagicstraDemoRegular.ttf", 20)
+    w, h = draw.textsize(msg, font=magistra)
+    draw.text((1150-w)/2, (669-h)/3*2, msg, fill="black")
+    img.save("new.png", "PNG")
+
+    await channel.send(f"Welcome to the server {member.mention}! :partying_face:\n:one: Check out <@{852088286922801193}> to redeem membership :white_check_mark:\n:two: Stay updated on events in <@{856440780164169738}>\n:three: Customize your unique role in <@{852111666716213258}>\n:four: Get useful resources in <@{852101645836091472}> on your developing journey :person_climbing:\n", file=discord.File("new.png"))
+
+
 # Minecraft API Thingy
-@client.command()
+@ client.command()
 async def minecraft(ctx, arg):
     r = requests.get('https://api.minehut.com/server/' + arg + '?byName=true')
     json_data = r.json()
@@ -442,9 +461,9 @@ async def place(message, pos: int):
             check_winner(winning_condition, mark)
             if game_over:
                 if mark == "\U0001F1FD":
-                    await message.channel.send(player_one.mention + " wins!")
+                    await message.channel.send(player_one.mention + " wins! :trophy:")
                 else:
-                    await message.channel.send(player_two.mention + " wins!")
+                    await message.channel.send(player_two.mention + " wins! :trophy:")
             elif count >= 9:
                 await message.channel.send("It's a tie.")
 

@@ -1,1 +1,0 @@
-client.run(os.environ.get('TOKEN'))
