@@ -353,7 +353,7 @@ async def play(ctx, url: str):
     voice.play(discord.FFmpegPCMAudio("song.mp3"))
 
 
-client.run('ODIxMzc3MjI4Nzk3MTE2NDM2.YFC1Jw._Q8vI0Z_wkHpJsP_x60jHM954Fk')
+client.run(os.environ.get('TOKEN'))
 
 # Run multiple dif bot in one script
 # loop = asyncio.get_event_loop()
