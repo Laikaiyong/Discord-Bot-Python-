@@ -89,11 +89,11 @@ async def on_member_join(member):
     img = Image.open("Pynata Cover.png")
     img = img.copy()
     member_im = Image.open(requests.get(member.avatar_url, stream=True).raw)
-    img.paste(member_im, (int(1150/2), int(669/3))
-    msg=f"Welcome {member.name}"
-    draw=ImageDraw.Draw(img)
-    magistra=ImageFont.truetype("MagicstraDemoRegular.ttf", 20)
-    w, h=draw.textsize(msg, font=magistra)
+    img.paste(member_im, (int(1150/2), int(669/3)))
+    msg = f"Welcome {member.name}"
+    draw = ImageDraw.Draw(img)
+    magistra = ImageFont.truetype("MagicstraDemoRegular.ttf", 20)
+    w, h = draw.textsize(msg, font=magistra)
     draw.text(int((1150-w)/2), int((669-h)/3*2), msg, fill="black")
     img.save("new.png", "PNG")
 
@@ -103,14 +103,14 @@ async def on_member_join(member):
 # Minecraft API Thingy
 @ client.command()
 async def minecraft(ctx, arg):
-    r=requests.get('https://api.minehut.com/server/' + arg + '?byName=true')
-    json_data=r.json()
+    r = requests.get('https://api.minehut.com/server/' + arg + '?byName=true')
+    json_data = r.json()
 
-    description=json_data["server"]["motd"]
-    online=str(json_data["server"]["online"])
-    playerCount=str(json_data["server"]["playerCount"])
+    description = json_data["server"]["motd"]
+    online = str(json_data["server"]["online"])
+    playerCount = str(json_data["server"]["playerCount"])
 
-    embed=discord.Embed(
+    embed = discord.Embed(
         title=arg.capitalize() + " Server Info",
         description='Description: ' + description +
         '\nOnline: ' + online + '\nPlayers: ' + playerCount,
@@ -136,9 +136,9 @@ async def on_message(message):
         if message.mentions[0] == client.user:
 
             with open("prefixes.json", "r") as read:
-                prefixes=json.load(read)
+                prefixes = json.load(read)
 
-            pre=prefixes[str(message.guild.id)]
+            pre = prefixes[str(message.guild.id)]
 
             await message.channel.send(f"My prefix for {message.guild.name} is now {pre}.")
 
@@ -151,18 +151,18 @@ async def on_message(message):
 # Remove vulgar and Respond Greetings
 @ client.listen('on_message')
 async def vulgar_greets(message):
-    message.content=message.content.lower()
+    message.content = message.content.lower()
 
     # Avoid bot to respond to itself
     if message.author == client.user:
         return
 
     # Exception of rude message / Message auto clearing
-    rude_words=["fuck", "sohai", "cibai",
+    rude_words = ["fuck", "sohai", "cibai",
                   "diu", "dick", "boobs", "tits", "ass"]
 
     # Bot interaction (greetings)
-    greetings=["hello", "hi", "hey", "henlo", "hai", "sup"]
+    greetings = ["hello", "hi", "hey", "henlo", "hai", "sup"]
 
     # Delete inappropriate message
     for rude_word in rude_words:
@@ -173,8 +173,8 @@ async def vulgar_greets(message):
     else:
         for greets in greetings:
             if re.search(rf'(\s|^){greets}(\b|$)', message.content):
-                mention=message.author.mention
-                greets=greets.capitalize()
+                mention = message.author.mention
+                greets = greets.capitalize()
 
                 # If sender is creator
                 if str(message.author) == "Vandyck#7726":
@@ -192,19 +192,19 @@ async def vulgar_greets(message):
 # Nominate command
 @ client.command()
 async def nominate(message):
-    users=[
+    users = [
         member for member in message.channel.members if "bots" not in [y.name.lower() for y in member.roles] and member != str(message.author)]
-    user=rd.choice(users)
+    user = rd.choice(users)
     await message.channel.send(user.mention + " had been nominated.")
 
 
 # Command to create modmail channel
 @ client.command()
 async def mod_mail(ctx):
-    guild=ctx.guild
-    admin_role=discord.utils.get(
+    guild = ctx.guild
+    admin_role = discord.utils.get(
         guild.roles, name="Core")
-    overwrites={
+    overwrites = {
         guild.default_role: discord.PermissionOverwrite(read_messages=False),
         admin_role: discord.PermissionOverwrite(read_messages=True)
     }
@@ -219,14 +219,14 @@ async def mail_message(message):
     if message.author == client.user:
         return
 
-    empty_array=[]
-    modmail_channel=discord.utils.get(
+    empty_array = []
+    modmail_channel = discord.utils.get(
         client.get_all_channels(), name="\U0001F4E7-mod-mail")
     if str(message.channel.type) == "private":
 
         # Check is it an attachment
         if message.attachments != empty_array:
-            files=message.attachments
+            files = message.attachments
             await modmail_channel.send(f"[{message.author.name}]")
 
             for file in files:
@@ -235,17 +235,17 @@ async def mail_message(message):
             await modmail_channel.send("[" + message.author.name + "] " + message.content)
 
     elif str(message.channel) == 'mod-mail' and message.content.startswith("<@"):
-        member_object=message.mention[0]
+        member_object = message.mention[0]
         if message.attachments != empty_array:
-            files=message.attachments
+            files = message.attachments
             await modmail_channel.send(f"[{message.author.name}]")
 
             for file in files:
                 await modmail_channel.send(file.url)
         else:
-            index=message.content.index(" ")
-            string=message.content
-            mod_message=string[index:]
+            index = message.content.index(" ")
+            string = message.content
+            mod_message = string[index:]
 
             await member_object.send(f"[{message.author.name}] {mod_message}")
 
@@ -253,7 +253,7 @@ async def mail_message(message):
 # Client help command
 @ client.command()
 async def help(ctx):
-    embed=discord.Embed(
+    embed = discord.Embed(
         title="KY Gor Gor commands",
         description="Here are all the command syntax available:",
         color=discord.Color.dark_gold()
@@ -270,15 +270,15 @@ async def help(ctx):
 # Client Server dashboard command
 @ client.command()
 async def server(ctx):
-    name=str(ctx.guild.name)
-    id=str(ctx.guild.id)
-    icon=str(ctx.guild.icon_url)
-    description=str(ctx.guild.description)
-    owner=str(ctx.guild.owner)
-    region=str(ctx.guild.region)
-    memberCount=str(ctx.guild.member_count)
+    name = str(ctx.guild.name)
+    id = str(ctx.guild.id)
+    icon = str(ctx.guild.icon_url)
+    description = str(ctx.guild.description)
+    owner = str(ctx.guild.owner)
+    region = str(ctx.guild.region)
+    memberCount = str(ctx.guild.member_count)
 
-    embed=discord.Embed(
+    embed = discord.Embed(
         title=name + " Server Information",
         description=description,
         color=discord.Color.dark_gold()
@@ -300,14 +300,14 @@ async def join(ctx):
         await ctx.send("{} is not connected to a voice channel".format(ctx.message.author.mention))
         return
     else:
-        channel=ctx.message.author.voice.channel
+        channel = ctx.message.author.voice.channel
         await channel.connect()
 
 
 # Leave voice channel
 @ client.command(name='leave', help='To make the bot leave the voice channel')
 async def leave(ctx):
-    voice=discord.utils.get(client.voice_clients, guild=ctx.guild)
+    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
     if voice.is_connected():
         await voice.disconnect()
     else:
@@ -317,7 +317,7 @@ async def leave(ctx):
 # Pause music
 @ client.command()
 async def pause(ctx):
-    voice=discord.utils.get(client.voice_clients, guild=ctx.guild)
+    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
 
     if voice.is_playing():
         voice.pause()
@@ -328,14 +328,14 @@ async def pause(ctx):
 # Pause music
 @ client.command()
 async def resume(ctx):
-    voice=discord.utils.get(client.voice_clients, guild=ctx.guild)
+    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
     voice.stop()
 
 
 # Pause music
 @ client.command(name='Remove music', help='To make the bot remove playlist and stop in the voice channel')
 async def stop(ctx):
-    voice=discord.utils.get(client.voice_clients, guild=ctx.guild)
+    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
 
     if voice.is_paused():
         voice.resume()
@@ -346,18 +346,18 @@ async def stop(ctx):
 # Play music
 @ client.command()
 async def play(ctx, url: str):
-    song=os.path.isfile("song.mp3")
+    song = os.path.isfile("song.mp3")
     try:
         if song:
             os.remove("song.mp3")
     except PermissionError:
         await ctx.send("Wait for the current playing music to end or use the 'stop' command")
 
-    voice_channel=ctx.message.author.voice.channel
+    voice_channel = ctx.message.author.voice.channel
     await voice_channel.connect()
-    voice=discord.utils.get(client.voice_clients, guild=ctx.guild)
+    voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
 
-    ydl_opts={
+    ydl_opts = {
         'format': 'bestaudio/best',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
@@ -374,13 +374,13 @@ async def play(ctx, url: str):
     voice.play(discord.FFmpegPCMAudio("song.mp3"))
 
 # Tic Tac Toe
-player_one=""
-player_two=""
-turn=""
-game_over=True
-board=[]
+player_one = ""
+player_two = ""
+turn = ""
+game_over = True
+board = []
 
-winning_condition=[
+winning_condition = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -402,30 +402,30 @@ async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
 
     if game_over:
         global board
-        board=[
+        board = [
             "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C"]
-        turn=""
-        game_over=False
-        count=0
+        turn = ""
+        game_over = False
+        count = 0
 
-        player_one=p1
-        player_two=p2
+        player_one = p1
+        player_two = p2
 
-        line=""
+        line = ""
         for index in range(len(board)):
             if index in [2, 5, 8]:
                 line += " " + board[index]
                 await ctx.send(line)
-                line=""
+                line = ""
             else:
                 line += " " + board[index]
 
-        num=rd.randint(1, 2)
+        num = rd.randint(1, 2)
         if num == 1:
-            turn=player_one
+            turn = player_one
             await ctx.send(f"It is {player_one.mention}'s turn.")
         elif num == 2:
-            turn=player_two
+            turn = player_two
             await ctx.send(f"It is {player_two.mention}'s turn.")
     else:
         await ctx.send("A game is already in progress. Finish it before starting anew one. \U0001F3AE")
@@ -441,21 +441,21 @@ async def place(message, pos: int):
     global game_over
 
     if not game_over:
-        mark=""
+        mark = ""
         if turn == player_one and message.author == player_one:
-            mark="\U0001F1FD"
+            mark = "\U0001F1FD"
         elif turn == player_two and message.author == player_two:
-            mark=":o2:"
+            mark = ":o2:"
         if 0 < pos < 10 and board[pos-1] == "\U00002B1C":
-            board[pos-1]=mark
+            board[pos-1] = mark
             count += 1
 
-            line=""
+            line = ""
             for index in range(len(board)):
                 if index in (2, 5, 8):
                     line += " " + board[index]
                     await message.channel.send(line)
-                    line=""
+                    line = ""
                 else:
                     line += " " + board[index]
 
@@ -469,9 +469,9 @@ async def place(message, pos: int):
                 await message.channel.send("It's a tie.")
 
             if turn == player_one:
-                turn=player_two
+                turn = player_two
             else:
-                turn=player_one
+                turn = player_one
 
         else:
             await message.channel.send("It is not your turn.")
@@ -484,7 +484,7 @@ def check_winner(winning_condition, mark):
     global game_over
     for condition in winning_condition:
         if board[condition[0]] == mark and board[condition[1]] == mark and board[condition[2]] == mark:
-            game_over=True
+            game_over = True
 
 
 @ tictactoe.error
