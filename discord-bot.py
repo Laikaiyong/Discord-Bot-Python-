@@ -81,7 +81,7 @@ async def on_ready():
 
 
 # Welcome Card
-@client.event()
+@client.event
 async def on_member_join(member):
     guild = client.get_guild(852085478659457035)
     channel = guild.get_channel(852085478659457042)
@@ -502,8 +502,8 @@ async def place_error(ctx, error):
         await ctx.send("Please make sure to enter an integer.")
 
 
-client.run('ODIxMzc3MjI4Nzk3MTE2NDM2.YFC1Jw._Q8vI0Z_wkHpJsP_x60jHM954Fk')
-# client.run(os.environ.get('TOKEN'))
+# client.run('ODIxMzc3MjI4Nzk3MTE2NDM2.YFC1Jw._Q8vI0Z_wkHpJsP_x60jHM954Fk')
+client.run(os.environ.get('TOKEN'))
 
 # Run multiple dif bot in one script
 # loop = asyncio.get_event_loop()
