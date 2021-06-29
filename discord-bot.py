@@ -80,12 +80,20 @@ async def on_ready():
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.competing, name="Vandyck#7726 兄ちゃん戦争"))
 
 
+# Member count
+def member_count(ctx):
+    member_count = len(
+        [member for member in ctx.guild.members if not member.bot])
+
+    return member_count
+
+
 # Welcome Card
 @client.event
-async def on_member_join(member, ctx):
+async def on_member_join(member):
     guild = client.get_guild(852085478659457035)
     channel = guild.get_channel(852085478659457042)
-    member_count = len(ctx.guild.members)
+    member_count = member_count()
 
     img = Image.open("Pynata Cover.png")
     img = img.copy()
