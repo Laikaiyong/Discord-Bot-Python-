@@ -94,7 +94,7 @@ async def on_member_join(member):
     draw = ImageDraw.Draw(img)
     magistra = ImageFont.truetype("MagicstraDemoRegular.ttf", 20)
     w, h = draw.textsize(msg, font=magistra)
-    draw.text(int((1150-w)/2), int((669-h)/3*2), msg, fill="black")
+    draw.text(int((1150-w)/2), int((669-h)/3*2), msg)
     img.save("new.png", "PNG")
 
     await channel.send(f"Welcome to the server {member.mention}! :partying_face:\n:one: Check out <@{852088286922801193}> to redeem membership :white_check_mark:\n:two: Stay updated on events in <@{856440780164169738}>\n:three: Customize your unique role in <@{852111666716213258}>\n:four: Get useful resources in <@{852101645836091472}> on your developing journey :person_climbing:\n", file=discord.File("new.png"))
