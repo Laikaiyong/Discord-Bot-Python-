@@ -82,22 +82,23 @@ async def on_ready():
 
 # Welcome Card
 @client.event
-async def on_member_join(member):
+async def on_member_join(member, ctx):
     guild = client.get_guild(852085478659457035)
     channel = guild.get_channel(852085478659457042)
+    member_count = len(ctx.guild.members)
 
     img = Image.open("Pynata Cover.png")
     img = img.copy()
     member_im = Image.open(requests.get(member.avatar_url, stream=True).raw)
-    img.paste(member_im, (int(1150/2), int(669/3)))
-    msg = f"Welcome {member.name}"
+    img.paste(member_im, (int(1150/2), int(669/2)))
+    msg = "Welcome" + member.name + " (Member" + member_count + ")"
     draw = ImageDraw.Draw(img)
     magistra = ImageFont.truetype("MagicstraDemoRegular.ttf", 20)
     w, h = draw.textsize(msg, font=magistra)
-    draw.text(((1150-w)/2, (669-h)/3*2), msg)
+    draw.text(((1150-w)/2, (669-h)/3*2), msg, fill="black")
     img.save("new.png", "PNG")
 
-    await channel.send(f"Welcome to the server {member.mention}! :partying_face:\n:one: Check out <@{852088286922801193}> to redeem membership :white_check_mark:\n:two: Stay updated on events in <@{856440780164169738}>\n:three: Customize your unique role in <@{852111666716213258}>\n:four: Get useful resources in <@{852101645836091472}> on your developing journey :person_climbing:\n", file=discord.File("new.png"))
+    await channel.send(f"Welcome to the server {member.mention}! :partying_face:\n:one: Check out <#{852088286922801193}> to redeem membership :white_check_mark:\n:two: Stay updated on events in <#{856440780164169738}> :fireworks:\n:three: Customize your unique role in <#{852111666716213258}> :scroll:\n:four: Get useful resources in <#{852101645836091472}> on your developing journey :person_climbing:\n", file=discord.File("new.png"))
 
 
 # Minecraft API Thingy
