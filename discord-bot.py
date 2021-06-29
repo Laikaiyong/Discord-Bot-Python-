@@ -148,7 +148,7 @@ async def vulgar_greets(message):
     for rude_word in rude_words:
         if re.search(rf'(\s|^){rude_word}(\b|$)', message.content):
             await message.channel.purge(limit=1)
-            break
+        break
 
     else:
         for greets in greetings:
@@ -379,7 +379,9 @@ async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
     global player_two
     global turn
     global game_over
+
     if game_over:
+        global board
         board = [
             "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C"]
         turn = ""
@@ -410,7 +412,7 @@ async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
 
 
 @ client.command()
-async def place(ctx, pos: int):
+async def place(message, pos: int):
     global turn
     global player_one
     global player_two
@@ -420,45 +422,42 @@ async def place(ctx, pos: int):
 
     if not game_over:
         mark = ""
-        if turn == ctx.author:
-            if turn == player_one:
-                mark = "\U0001F1FD"
-            elif turn == player_two:
-                mark = ":o2:"
-            if 0 < pos < 10 and board[pos-1] == ":white_large_square":
-                board[pos-1] = mark
-                count += 1
+        if turn == player_one and message.author == player_one:
+            mark = "\U0001F1FD"
+        elif turn == player_two and message.author == player_two:
+            mark = ":o2:"
+        if 0 < pos < 10 and board[pos-1] == "\U00002B1C":
+            board[pos-1] = mark
+            count += 1
 
-                line = ""
-                for index in range(len(board)):
-                    if index in (2, 5, 8):
-                        line += " " + board[index]
-                        await ctx.send(line)
-                        line = ""
-                    else:
-                        line += " " + board[index]
-
-                check_winner(winning_condition, mark)
-                if game_over:
-                    if mark == "\U0001F1FD":
-                        await ctx.send(player_one.mention + " wins!")
-                    else:
-                        await ctx.send(player_two.mention + " wins!")
-                elif count >= 9:
-                    await ctx.send("It's a tie.")
-
-                if turn == player_one:
-                    turn = player_two
+            line = ""
+            for index in range(len(board)):
+                if index in (2, 5, 8):
+                    line += " " + board[index]
+                    await message.channel.send(line)
+                    line = ""
                 else:
-                    turn = player_one
+                    line += " " + board[index]
 
+            check_winner(winning_condition, mark)
+            if game_over:
+                if mark == "\U0001F1FD":
+                    await message.channel.send(player_one.mention + " wins!")
+                else:
+                    await message.channel.send(player_two.mention + " wins!")
+            elif count >= 9:
+                await message.channel.send("It's a tie.")
+
+            if turn == player_one:
+                turn = player_two
             else:
-                await ctx.send("Be sure to choose an integer between 1 and 9 (inclusive) and an unmarked title.")
+                turn = player_one
+
         else:
-            await ctx.send("It is not your turn.")
+            await message.channel.send("It is not your turn.")
 
     else:
-        await ctx.send("Please start a new game. \U0001F3B2")
+        await message.channel.send("Please start a new game. \U0001F3B2")
 
 
 def check_winner(winning_condition, mark):
@@ -481,11 +480,11 @@ async def place_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("Plase enter a position you would like to mark.")
     elif isinstance(error, commands.BadArgument):
-        await ctx.send(f"Please make sure to enter an integer.")
+        await ctx.send("Please make sure to enter an integer.")
 
 
-# client.run('ODIxMzc3MjI4Nzk3MTE2NDM2.YFC1Jw._Q8vI0Z_wkHpJsP_x60jHM954Fk')
-client.run(os.environ.get('TOKEN'))
+client.run('ODIxMzc3MjI4Nzk3MTE2NDM2.YFC1Jw._Q8vI0Z_wkHpJsP_x60jHM954Fk')
+# client.run(os.environ.get('TOKEN'))
 
 # Run multiple dif bot in one script
 # loop = asyncio.get_event_loop()
