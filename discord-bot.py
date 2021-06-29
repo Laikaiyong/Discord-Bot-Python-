@@ -87,9 +87,10 @@ async def on_member_join(member):
     channel = guild.get_channel(852085478659457042)
 
     img = Image.open("Pynata Cover.png")
+    img = img.copy()
     member_im = Image.open(requests.get(member.avatar_url, stream=True).raw)
     img.paste(member_im, (1150/2, 669/3))
-    msg = f"Welcome\n{member.name}"
+    msg = f"Welcome {member.name}"
     draw = ImageDraw.Draw(img)
     magistra = ImageFont.truetype("MagicstraDemoRegular.ttf", 20)
     w, h = draw.textsize(msg, font=magistra)
