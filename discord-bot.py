@@ -85,7 +85,7 @@ async def on_ready():
 async def on_member_join(member):
     guild = client.get_guild(852085478659457035)
     channel = guild.get_channel(852085478659457042)
-    member_count = len(guild.member_count)
+    member_count = guild.member_count
 
     img = Image.open("Pynata Cover.png")
     img = img.copy()
