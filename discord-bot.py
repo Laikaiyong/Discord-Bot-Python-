@@ -1,12 +1,13 @@
 import discord
+from discord import player
 from discord.ext import commands
 import json
 import requests
 import re
 import youtube_dl
 import os
+import random as rd
 # import datetime
-# import random
 # import asyncio
 
 
@@ -74,8 +75,9 @@ async def on_ready():
     discord.Streaming display streaming
     discord.Activity:
     set type = watching / listening
+    type=5 > Competing in
     '''
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='Code Simping'))
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.competing, name="Vandyck#7726 兄ちゃん戦争"))
 
 
 # Minecraft API Thingy
@@ -101,7 +103,7 @@ async def minecraft(ctx, arg):
 
 
 # Inspect users message for prefix manipulation
-@client.event
+@ client.event
 async def on_message(message):
 
     # Avoid bot to respond to itself
@@ -126,41 +128,9 @@ async def on_message(message):
     await client.process_commands(message)
 
 
-# Greetings
-@client.listen('on_message')
-async def greets(message):
-    message.content = message.content.lower()
-
-    # Avoid bot to respond to itself
-    if message.author == client.user:
-        return
-
-    # Bot interaction (greetings)
-    greetings = ["hello", "hi", "hey", "henlo", "hai", "sup"]
-
-    for greets in greetings:
-        # Bot greets back
-
-        if re.search(rf'(\s|^){greets}(\b|$)', message.content):
-            mention = message.author.mention
-            greets = greets.capitalize()
-
-            # If sender is creator
-            if str(message.author) == "Vandyck#7726":
-                await message.channel.send(f"All hail master, {mention}.  \U0001F647")
-
-            # If sender is core member
-            elif "core" in [y.name.lower() for y in message.author.roles]:
-
-                await message.channel.send(f"{greets} administrator {mention} .\nI am ready at your service. \U0001F935")
-
-            else:
-                await message.channel.send(f"{greets}, {mention}!")
-
-
-# Remove vulgar comment
-@client.listen('on_message')
-async def remove_vulgar(message):
+# Remove vulgar and Respond Greetings
+@ client.listen('on_message')
+async def vulgar_greets(message):
     message.content = message.content.lower()
 
     # Avoid bot to respond to itself
@@ -171,14 +141,45 @@ async def remove_vulgar(message):
     rude_words = ["fuck", "sohai", "cibai",
                   "diu", "dick", "boobs", "tits", "ass"]
 
+    # Bot interaction (greetings)
+    greetings = ["hello", "hi", "hey", "henlo", "hai", "sup"]
+
+    # Delete inappropriate message
     for rude_word in rude_words:
-        # Delete inappropriate message
         if re.search(rf'(\s|^){rude_word}(\b|$)', message.content):
             await message.channel.purge(limit=1)
+            break
+
+    else:
+        for greets in greetings:
+            if re.search(rf'(\s|^){greets}(\b|$)', message.content):
+                mention = message.author.mention
+                greets = greets.capitalize()
+
+                # If sender is creator
+                if str(message.author) == "Vandyck#7726":
+                    await message.channel.send(f"All hail master, {mention}.  \U0001F647")
+
+                # If sender is core member
+                elif "core" in [y.name.lower() for y in message.author.roles]:
+
+                    await message.channel.send(f"{greets} administrator {mention} .\nI am ready at your service. \U0001F935")
+
+                else:
+                    await message.channel.send(f"{greets}, {mention}!")
+
+
+# Nominate command
+@ client.command()
+async def nominate(message):
+    users = [
+        member for member in message.channel.members if "bots" not in [y.name.lower() for y in member.roles] and member != str(message.author)]
+    user = rd.choice(users)
+    await message.channel.send(user.mention + " had been nominated.")
 
 
 # Command to create modmail channel
-@client.command()
+@ client.command()
 async def mod_mail(ctx):
     guild = ctx.guild
     admin_role = discord.utils.get(
@@ -191,7 +192,7 @@ async def mod_mail(ctx):
 
 
 # Mod mail
-@client.listen('on_message')
+@ client.listen('on_message')
 async def mail_message(message):
 
     # Avoid bot to respond to itself
@@ -206,18 +207,18 @@ async def mail_message(message):
         # Check is it an attachment
         if message.attachments != empty_array:
             files = message.attachments
-            await modmail_channel.send(f"[{message.author.display_name}]")
+            await modmail_channel.send(f"[{message.author.name}]")
 
             for file in files:
                 await modmail_channel.send(file.url)
         else:
-            await modmail_channel.send("[" + message.author.display_name + "]" + message.content)
+            await modmail_channel.send("[" + message.author.name + "] " + message.content)
 
     elif str(message.channel) == 'mod-mail' and message.content.startswith("<@"):
         member_object = message.mention[0]
         if message.attachments != empty_array:
             files = message.attachments
-            await modmail_channel.send(f"[{message.author.display_name}]")
+            await modmail_channel.send(f"[{message.author.name}]")
 
             for file in files:
                 await modmail_channel.send(file.url)
@@ -226,11 +227,11 @@ async def mail_message(message):
             string = message.content
             mod_message = string[index:]
 
-            await member_object.send(f"[{message.author.display_name}] {mod_message}")
+            await member_object.send(f"[{message.author.name}] {mod_message}")
 
 
-# Client command command
-@client.command()
+# Client help command
+@ client.command()
 async def help(ctx):
     embed = discord.Embed(
         title="KY Gor Gor commands",
@@ -273,7 +274,7 @@ async def server(ctx):
 
 # Music Player
 # Join voice channel
-@client.command(name='join', help='Tells the bot to join the voice channel')
+@ client.command(name='join', help='Tells the bot to join the voice channel')
 async def join(ctx):
     if not ctx.message.author.voice:
         await ctx.send("{} is not connected to a voice channel".format(ctx.message.author.mention))
@@ -284,7 +285,7 @@ async def join(ctx):
 
 
 # Leave voice channel
-@client.command(name='leave', help='To make the bot leave the voice channel')
+@ client.command(name='leave', help='To make the bot leave the voice channel')
 async def leave(ctx):
     voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
     if voice.is_connected():
@@ -294,7 +295,7 @@ async def leave(ctx):
 
 
 # Pause music
-@client.command()
+@ client.command()
 async def pause(ctx):
     voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
 
@@ -305,14 +306,14 @@ async def pause(ctx):
 
 
 # Pause music
-@client.command()
+@ client.command()
 async def resume(ctx):
     voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
     voice.stop()
 
 
 # Pause music
-@client.command(name='Remove music', help='To make the bot remove playlist and stop in the voice channel')
+@ client.command(name='Remove music', help='To make the bot remove playlist and stop in the voice channel')
 async def stop(ctx):
     voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
 
@@ -323,7 +324,7 @@ async def stop(ctx):
 
 
 # Play music
-@client.command()
+@ client.command()
 async def play(ctx, url: str):
     song = os.path.isfile("song.mp3")
     try:
@@ -352,7 +353,138 @@ async def play(ctx, url: str):
 
     voice.play(discord.FFmpegPCMAudio("song.mp3"))
 
+# Tic Tac Toe
+player_one = ""
+player_two = ""
+turn = ""
+game_over = True
+board = []
 
+winning_condition = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+]
+
+
+@ client.command()
+async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
+    global count
+    global player_one
+    global player_two
+    global turn
+    global game_over
+    if game_over:
+        board = [
+            "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C", "\U00002B1C"]
+        turn = ""
+        game_over = False
+        count = 0
+
+        player_one = p1
+        player_two = p2
+
+        line = ""
+        for index in range(len(board)):
+            if index in [2, 5, 8]:
+                line += " " + board[index]
+                await ctx.send(line)
+                line = ""
+            else:
+                line += " " + board[index]
+
+        num = rd.randint(1, 2)
+        if num == 1:
+            turn = player_one
+            await ctx.send(f"It is {player_one.mention}'s turn.")
+        elif num == 2:
+            turn = player_two
+            await ctx.send(f"It is {player_two.mention}'s turn.")
+    else:
+        await ctx.send("A game is already in progress. Finish it before starting anew one. \U0001F3AE")
+
+
+@ client.command()
+async def place(ctx, pos: int):
+    global turn
+    global player_one
+    global player_two
+    global board
+    global count
+    global game_over
+
+    if not game_over:
+        mark = ""
+        if turn == ctx.author:
+            if turn == player_one:
+                mark = "\U0001F1FD"
+            elif turn == player_two:
+                mark = ":o2:"
+            if 0 < pos < 10 and board[pos-1] == ":white_large_square":
+                board[pos-1] = mark
+                count += 1
+
+                line = ""
+                for index in range(len(board)):
+                    if index in (2, 5, 8):
+                        line += " " + board[index]
+                        await ctx.send(line)
+                        line = ""
+                    else:
+                        line += " " + board[index]
+
+                check_winner(winning_condition, mark)
+                if game_over:
+                    if mark == "\U0001F1FD":
+                        await ctx.send(player_one.mention + " wins!")
+                    else:
+                        await ctx.send(player_two.mention + " wins!")
+                elif count >= 9:
+                    await ctx.send("It's a tie.")
+
+                if turn == player_one:
+                    turn = player_two
+                else:
+                    turn = player_one
+
+            else:
+                await ctx.send("Be sure to choose an integer between 1 and 9 (inclusive) and an unmarked title.")
+        else:
+            await ctx.send("It is not your turn.")
+
+    else:
+        await ctx.send("Please start a new game. \U0001F3B2")
+
+
+def check_winner(winning_condition, mark):
+    global game_over
+    for condition in winning_condition:
+        if board[condition[0]] == mark and board[condition[1]] == mark and board[condition[2]] == mark:
+            game_over = True
+
+
+@ tictactoe.error
+async def tictactoe_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("Plase mention 2 players for this command.")
+    elif isinstance(error, commands.BadArgument):
+        await ctx.send(f"Please make sure to mention / ping players (ie. {ctx.message.author.mention})")
+
+
+@ place.error
+async def place_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("Plase enter a position you would like to mark.")
+    elif isinstance(error, commands.BadArgument):
+        await ctx.send(f"Please make sure to enter an integer.")
+
+
+# client.run('ODIxMzc3MjI4Nzk3MTE2NDM2.YFC1Jw._Q8vI0Z_wkHpJsP_x60jHM954Fk')
 client.run(os.environ.get('TOKEN'))
 
 # Run multiple dif bot in one script
