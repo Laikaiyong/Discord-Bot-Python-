@@ -91,7 +91,7 @@ async def on_member_join(member):
     img = img.copy()
     member_im = Image.open(requests.get(member.avatar_url, stream=True).raw)
     img.paste(member_im, (int(1150/2), int(669/2)))
-    msg = "Welcome" + member.name + " (Member" + member_count + ")"
+    msg = "Welcome" + member.name + " (Member " + str(member_count) + ")"
     draw = ImageDraw.Draw(img)
     magistra = ImageFont.truetype("MagicstraDemoRegular.ttf", 20)
     w, h = draw.textsize(msg, font=magistra)
