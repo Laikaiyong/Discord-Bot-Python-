@@ -53,19 +53,6 @@ async def settings(ctx, prefix):
     await ctx.send(f"The prefix was changed to {prefix}.")
 
 
-# # Error handling example
-# @commands.command(name="kick")
-# @commands.has_permissions(kick_members=True)
-# async def kick(ctx, members, *, reason=None):
-#     await member.kick(reason=reason)
-
-# @kick.error
-# async def kick_error(error, ctx):
-#     if isinstance(error, commands.MissingPermissions):
-#         owner = ctx.guild.owner
-#         direct_message = await owner.create_dm()
-#         await direct_message.send("Missing Permissions")
-
 # Discord Presence
 @client.event
 async def on_ready():
@@ -102,6 +89,33 @@ async def on_member_join(member):
     img.save("new.png", "PNG")
 
     await channel.send(f"Welcome to the server {member.mention}! :partying_face:\n:one: Check out <#{852088286922801193}> to redeem membership :white_check_mark:\n:two: Stay updated on events in <#{856440780164169738}> :fireworks:\n:three: Customize your unique role in <#{852111666716213258}> :scroll:\n:four: Get useful resources in <#{852101645836091472}> on your developing journey :person_climbing:\n", file=discord.File("new.png"))
+
+
+# # Reaction Role
+# @ client.command()
+# async def react(ctx, title=None, id=None, reactrole=None):
+#     embed.set_footer
+#     pass
+
+
+# @ client.event
+# async def on_raw_reaction_add(payload):
+#     message_id = payload.message_id
+#     if message_id == smtg:
+#         guild_id = payload.guild_id
+#         guild = discord.utils.find(lambda g: g.id == guild_id, client.guilds)
+
+#         role = discord.utils.get(guild.roles, name=payload.emoji.name)
+
+#         if role is not None:
+#             member = discord.utils.find(
+#                 lambda m: m.id == payload.user_id, guild.members)
+#             if member is not None:
+#                 await member.add_removes(role)
+#             else:
+#                 pass
+#         else:
+#             pass
 
 
 # Minecraft API Thingy
@@ -171,7 +185,7 @@ async def vulgar_greets(message):
     # Delete inappropriate message
     for rude_word in rude_words:
         if re.search(rf'(\s|^){rude_word}(\b|$)', message.content):
-            await message.channel.purge(limit=1)
+            await message.delete()
         break
 
     else:
@@ -191,6 +205,16 @@ async def vulgar_greets(message):
 
                 else:
                     await message.channel.send(f"{greets}, {mention}!")
+
+
+# React to specific message
+@ client.listen('on_message')
+async def emote_react(message):
+    nice_words = ['nice', 'noice', 'nais', 'nices', 'nicess']
+
+    for word in nice_words:
+        if re.search(rf'(\s|^){word}(\b|$)', message.content):
+            await message.add_reaction("<:noice:859666087216676884>")
 
 
 # Nominate command
@@ -507,15 +531,4 @@ async def place_error(ctx, error):
         await ctx.send("Please make sure to enter an integer.")
 
 
-# client.run('ODIxMzc3MjI4Nzk3MTE2NDM2.YFC1Jw._Q8vI0Z_wkHpJsP_x60jHM954Fk')
 client.run(os.environ.get('TOKEN'))
-
-# Run multiple dif bot in one script
-# loop = asyncio.get_event_loop()
-
-
-# async def create_bots():
-#     await client.start('token')
-#     await commander.start('token')
-
-# loop.run_until_complete(create_bots())
