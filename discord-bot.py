@@ -7,7 +7,7 @@ import re
 import youtube_dl
 import os
 import random as rd
-from PIL import Image, ImageFont, ImageDraw
+from PIL import Image, ImageFont, ImageDraw, ImageOps
 # import datetime
 
 
@@ -89,13 +89,19 @@ async def on_member_join(member):
 
     img = Image.open("Pynata Cover.png")
     img = img.copy()
+
     member_im = Image.open(requests.get(member.avatar_url, stream=True).raw)
-    img.paste(member_im, (int(1150/2), int(669/2)))
+    mask = Image.open('mask.png'). convert('L')
+    member_im = member_im.resize((310, 300), Image.LANCZOS)
+    member_im = ImageOps.fit(member_im, mask.size, centering=(0.5, 0.5))
+    member_im.putalpha(mask)
+
+    img.paste(member_im, (int(1150/3), int(669/3)))
     msg = "Welcome" + member.name + " (Member " + str(member_count) + ")"
     draw = ImageDraw.Draw(img)
     magistra = ImageFont.truetype("MagicstraDemoRegular.ttf", 20)
     w, h = draw.textsize(msg, font=magistra)
-    draw.text(((1150-w)/2, (669-h)/3*2), msg, fill="black")
+    draw.text(((1150-w)/2, (669-h)/3*2), msg, fill="black", font=magistra)
     img.save("new.png", "PNG")
 
     await channel.send(f"Welcome to the server {member.mention}! :partying_face:\n:one: Check out <#{852088286922801193}> to redeem membership :white_check_mark:\n:two: Stay updated on events in <#{856440780164169738}> :fireworks:\n:three: Customize your unique role in <#{852111666716213258}> :scroll:\n:four: Get useful resources in <#{852101645836091472}> on your developing journey :person_climbing:\n", file=discord.File("new.png"))
