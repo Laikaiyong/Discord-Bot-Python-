@@ -93,10 +93,10 @@ async def on_member_join(member):
     member_im = Image.open(requests.get(member.avatar_url, stream=True).raw)
     member_im = member_im.resize((310, 300), Image.LANCZOS)
 
-    img.paste(member_im, (int(1150/3)+15, int(669/4)))
+    img.paste(member_im, (int(1150/3)+25, int(669/4)))
     msg = "Welcome " + member.name + " (Member " + str(member_count) + ")"
     draw = ImageDraw.Draw(img)
-    chunk_five = ImageFont.truetype("Chunk Five Print.otf", 40)
+    chunk_five = ImageFont.truetype("Chunk Five Print.otf", 60)
     w, h = draw.textsize(msg, font=chunk_five)
     draw.text(((1150-w)/2, (669-h)/8*7), msg, fill="black", font=chunk_five)
     img.save("new.png", "PNG")
