@@ -23,7 +23,7 @@ def get_prefix(client, message):
 intents = discord.Intents.default()
 intents.members = True
 client = commands.Bot(command_prefix=get_prefix,
-                      intents=intents, help_command=None)
+                      intents=intents, help_command=None, activity=discord.Activity(type=discord.ActivityType.competing, name="Vandyck#7726 兄ちゃん戦争"))
 
 
 # Join a new server and set prefix
@@ -53,20 +53,6 @@ async def settings(ctx, prefix):
     await ctx.send(f"The prefix was changed to {prefix}.")
 
 
-# Discord Presence
-@client.event
-async def on_ready():
-
-    ''' Note
-    discord.Game display playing
-    discord.Streaming display streaming
-    discord.Activity:
-    set type = watching / listening
-    type=5 > Competing in
-    '''
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.competing, name="Vandyck#7726 兄ちゃん戦争"))
-
-
 # Welcome Card
 @client.event
 async def on_member_join(member):
@@ -91,31 +77,80 @@ async def on_member_join(member):
     await channel.send(f"Welcome to the server {member.mention}! :partying_face:\n:one: Check out <#{852088286922801193}> to redeem membership :white_check_mark:\n:two: Stay updated on events in <#{856440780164169738}> :fireworks:\n:three: Customize your unique role in <#{852111666716213258}> :scroll:\n:four: Get useful resources in <#{852101645836091472}> on your developing journey :person_climbing:\n", file=discord.File("new.png"))
 
 
-# # Reaction Role
+# Reaction Role
+# Embed set up
 # @ client.command()
-# async def react(ctx, title=None, id=None, reactrole=None):
+# async def react(ctx, title, message, emoji, role: discord.Role):
+#     message_holder = message.content
+#     title = message_holder[message_holder.find("[")+1:message_holder.find("]")]
+#     message_section = message_holder.split("] ")[1]
+#     message = message_section.rstrip()[0]
+#     embed = discord.Embed(
+#         title=title,
+#         description=message
+#     )
+#     embed.add_field(name="Roles", value="\n".join([emote part]))
+#     count = 1
+#     for emote_part in message_section:
+#         emote = message_section.rstrip()[count]
+#         embed.add_field(value=emote)
+#         embed.set_author()
 #     embed.set_footer
 #     pass
 
 
-# @ client.event
-# async def on_raw_reaction_add(payload):
-#     message_id = payload.message_id
-#     if message_id == smtg:
-#         guild_id = payload.guild_id
-#         guild = discord.utils.find(lambda g: g.id == guild_id, client.guilds)
+@client.command()
+async def reactrole(ctx, message: discord.Message, emoji, role: discord.Role):
+    if role != None and message != None and emoji != None:
+        await message.add_reaction(emoji)
+        client.reaction_role.append(message, emoji, role)
 
-#         role = discord.utils.get(guild.roles, name=payload.emoji.name)
+        with open('reactrole.json') as json_file:
+            data = json.load(json_file)
 
-#         if role is not None:
-#             member = discord.utils.find(
-#                 lambda m: m.id == payload.user_id, guild.members)
-#             if member is not None:
-#                 await member.add_removes(role)
-#             else:
-#                 pass
-#         else:
-#             pass
+            new_react_role = {'role name': role.name,
+                              'role_id': role.id,
+                              'emoji': emoji,
+                              'message_id': message.id
+                              }
+
+            data.append(new_react_role)
+
+        with open('reactrole.json', 'w') as f:
+            json.dump(data, f, indent=4)
+
+    else:
+        await ctx.send("Invalid argument. (e.g. ~reactrole message_id :emoji: @role")
+
+
+@client.event
+async def on_raw_reaction_add(payload):
+
+    if payload.member.bot:
+        pass
+
+    else:
+        with open('reactrole.json') as react_file:
+            data = json.load(react_file)
+            for x in data:
+                if x['emoji'] == payload.emoji.name:
+                    role = discord.utils.get(client.get_guild(
+                        payload.guild_id).roles, id=x['role_id'])
+
+                    await payload.member.add_roles(role)
+
+
+@client.event
+async def on_raw_reaction_remove(payload):
+
+    with open('reactrole.json') as react_file:
+        data = json.load(react_file)
+        for x in data:
+            if x['emoji'] == payload.emoji.name:
+                role = discord.utils.get(client.get_guild(
+                    payload.guild_id).roles, id=x['role_id'])
+
+                await client.get_guild(payload.guild_id).get_member(payload.user_id).remove_roles(role)
 
 
 # Minecraft API Thingy
