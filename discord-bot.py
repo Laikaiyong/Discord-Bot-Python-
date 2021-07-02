@@ -103,7 +103,6 @@ async def on_member_join(member):
 async def reactrole(ctx, message: discord.Message, emoji, role: discord.Role):
     if role != None and message != None and emoji != None:
         await message.add_reaction(emoji)
-        client.reaction_role.append(message, emoji, role)
 
         with open('reactrole.json') as json_file:
             data = json.load(json_file)
