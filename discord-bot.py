@@ -7,7 +7,7 @@ import re
 import youtube_dl
 import os
 import random as rd
-from PIL import Image, ImageFont, ImageDraw, ImageOps
+from PIL import Image, ImageFont, ImageDraw
 # import datetime
 
 
@@ -100,23 +100,9 @@ async def on_member_join(member):
 
 
 @client.command()
-async def reactrole(ctx, message: discord.Message, emoji, role: discord.Role):
-    if role != None and message != None and emoji != None:
+async def reactrole(ctx, message: discord.Message, emoji):
+    if message != None and emoji != None:
         await message.add_reaction(emoji)
-
-        with open('reactrole.json') as json_file:
-            data = json.load(json_file)
-
-            new_react_role = {'role name': role.name,
-                              'role_id': role.id,
-                              'emoji': emoji,
-                              'message_id': message.id
-                              }
-
-            data.append(new_react_role)
-
-        with open('reactrole.json', 'w') as f:
-            json.dump(data, f, indent=4)
 
     else:
         await ctx.send("Invalid argument. (e.g. ~reactrole message_id :emoji: @role")
@@ -129,30 +115,33 @@ async def on_raw_reaction_add(payload):
         pass
 
     else:
-        with open('reactrole.json') as react_file:
-            data = json.load(react_file)
-            for x in data:
-                if x['emoji'] == payload.emoji.name:
-                    role = discord.utils.get(client.get_guild(
-                        payload.guild_id).roles, id=x['role_id'])
+        guild_id = payload.guild_id
 
+        with open("reactrole.json", "r") as f:
+            data = json.load(f)
+
+            for info in data:
+                if info == payload.emoji.name:
+                    role = discord.utils.get(guild_id.roles, name=data[info])
                     await payload.member.add_roles(role)
 
 
 @client.event
 async def on_raw_reaction_remove(payload):
 
-    with open('reactrole.json') as react_file:
-        data = json.load(react_file)
-        for x in data:
-            if x['emoji'] == payload.emoji.name:
+    with open("reactrole.json", "r") as f:
+        data = json.load(f)
+
+        for info in data:
+            if info == payload.emoji.name:
                 role = discord.utils.get(client.get_guild(
-                    payload.guild_id).roles, id=x['role_id'])
+                    payload.guild_id).roles, name=data[info])
 
                 await client.get_guild(payload.guild_id).get_member(payload.user_id).remove_roles(role)
 
-
 # Minecraft API Thingy
+
+
 @ client.command()
 async def minecraft(ctx, arg):
     r = requests.get('https://api.minehut.com/server/' + arg + '?byName=true')
