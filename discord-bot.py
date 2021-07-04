@@ -556,6 +556,4 @@ async def place_error(ctx, error):
         await ctx.send("Please make sure to enter an integer.")
 
 
-client.run('ODIxMzc3MjI4Nzk3MTE2NDM2.YFC1Jw.L-70Ls02ccvpaMH-EGN6-dwzOXA')
-
-# client.run(os.environ.get('TOKEN'))
+client.run(os.environ.get('TOKEN'))
