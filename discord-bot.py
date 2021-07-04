@@ -114,7 +114,7 @@ async def on_raw_reaction_add(payload):
     if payload.member.bot:
         pass
 
-    else:
+    elif payload.message_id in [860046847519621180, 860140723131252786, 860140829100343306]:
         guild_id = payload.guild_id
 
         with open("reactrole.json", "r") as f:
@@ -129,15 +129,16 @@ async def on_raw_reaction_add(payload):
 @client.event
 async def on_raw_reaction_remove(payload):
 
-    with open("reactrole.json", "r") as f:
-        data = json.load(f)
+    if payload.message_id in [860046847519621180, 860140723131252786, 860140829100343306]:
+        with open("reactrole.json", "r") as f:
+            data = json.load(f)
 
-        for info in data:
-            if info == payload.emoji.name:
-                role = discord.utils.get(client.get_guild(
-                    payload.guild_id).roles, name=data[info])
+            for info in data:
+                if info == payload.emoji.name:
+                    role = discord.utils.get(client.get_guild(
+                        payload.guild_id).roles, name=data[info])
 
-                await client.get_guild(payload.guild_id).get_member(payload.user_id).remove_roles(role)
+                    await client.get_guild(payload.guild_id).get_member(payload.user_id).remove_roles(role)`
 
 # Minecraft API Thingy
 
