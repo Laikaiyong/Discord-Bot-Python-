@@ -138,7 +138,7 @@ async def on_raw_reaction_remove(payload):
                     role = discord.utils.get(client.get_guild(
                         payload.guild_id).roles, name=data[info])
 
-                    await client.get_guild(payload.guild_id).get_member(payload.user_id).remove_roles(role)`
+                    await client.get_guild(payload.guild_id).get_member(payload.user_id).remove_roles(role)
 
 # Minecraft API Thingy
 
