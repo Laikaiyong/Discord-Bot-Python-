@@ -78,27 +78,6 @@ async def on_member_join(member):
 
 
 # Reaction Role
-# Embed set up
-# @ client.command()
-# async def react(ctx, title, message, emoji, role: discord.Role):
-#     message_holder = message.content
-#     title = message_holder[message_holder.find("[")+1:message_holder.find("]")]
-#     message_section = message_holder.split("] ")[1]
-#     message = message_section.rstrip()[0]
-#     embed = discord.Embed(
-#         title=title,
-#         description=message
-#     )
-#     embed.add_field(name="Roles", value="\n".join([emote part]))
-#     count = 1
-#     for emote_part in message_section:
-#         emote = message_section.rstrip()[count]
-#         embed.add_field(value=emote)
-#         embed.set_author()
-#     embed.set_footer
-#     pass
-
-
 @client.command()
 async def reactrole(ctx, message: discord.Message, emoji):
     if message != None and emoji != None:
