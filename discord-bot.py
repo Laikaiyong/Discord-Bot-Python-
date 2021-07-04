@@ -8,6 +8,7 @@ import youtube_dl
 import os
 import random as rd
 from PIL import Image, ImageFont, ImageDraw
+import emojis
 # import datetime
 
 
@@ -114,35 +115,35 @@ async def on_raw_reaction_add(payload):
     if payload.member.bot:
         pass
 
-    elif payload.message_id in [860046847519621180, 860140723131252786, 860140829100343306]:
+    elif int(payload.message_id) in [860046847519621180, 860140723131252786, 860140829100343306, 856834763545378836]:
         guild_id = payload.guild_id
+        guild = discord.utils.find(lambda g: g.id == guild_id, client.guilds)
 
-        with open("reactrole.json", "r") as f:
+        with open("reactrole.json") as f:
             data = json.load(f)
 
             for info in data:
-                if info == payload.emoji.name:
-                    role = discord.utils.get(guild_id.roles, name=data[info])
+                if info["emoji"] == payload.emoji.name:
+                    role = discord.utils.get(guild.roles, name=info["role"])
                     await payload.member.add_roles(role)
 
 
 @client.event
 async def on_raw_reaction_remove(payload):
 
-    if payload.message_id in [860046847519621180, 860140723131252786, 860140829100343306]:
-        with open("reactrole.json", "r") as f:
+    if int(payload.message_id) in [860046847519621180, 860140723131252786, 860140829100343306, 856834763545378836]:
+        guild_id = payload.guild_id
+        guild = discord.utils.find(lambda g: g.id == guild_id, client.guilds)
+
+        with open("reactrole.json") as f:
             data = json.load(f)
-
             for info in data:
-                if info == payload.emoji.name:
-                    role = discord.utils.get(client.get_guild(
-                        payload.guild_id).roles, name=data[info])
-
+                if info["emoji"] == payload.emoji.name:
+                    role = discord.utils.get(guild.roles, name=info["role"])
                     await client.get_guild(payload.guild_id).get_member(payload.user_id).remove_roles(role)
 
+
 # Minecraft API Thingy
-
-
 @ client.command()
 async def minecraft(ctx, arg):
     r = requests.get('https://api.minehut.com/server/' + arg + '?byName=true')
@@ -555,4 +556,6 @@ async def place_error(ctx, error):
         await ctx.send("Please make sure to enter an integer.")
 
 
-client.run(os.environ.get('TOKEN'))
+client.run('ODIxMzc3MjI4Nzk3MTE2NDM2.YFC1Jw.L-70Ls02ccvpaMH-EGN6-dwzOXA')
+
+# client.run(os.environ.get('TOKEN'))

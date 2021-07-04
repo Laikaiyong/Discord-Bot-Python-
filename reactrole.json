@@ -1,34 +1,134 @@
-{
-    "yo_yo": "Animation",
-    "soccer": "API",
-    "basketball": "App Development",
-    "football": "Artificial Intelligence",
-    "baseball": "Business in IT",
-    "softball": "Blockchain",
-    "tennis": "Cloud Computing",
-    "volleyball": "Cyber Security",
-    "rugby_football": "Data Analytics",
-    "flying_disc": "Game Development",
-    "ping_pong": "Multimedia Technology",
-    "badminton": "Software Engineering",
-    "boomerang": "UX/UI",
-    "8ball": "Web Development",
-    "c_": "C",
-    "cpp": "C++",
-    "csharp": "C#",
-    "dart": "Dart",
-    "flutter": "Flutter",
-    "go": "Go",
-    "java": "Java",
-    "javascript": "Javascript",
-    "kotlin": "Kotlin",
-    "php": "PHP",
-    "python": "Python",
-    "r_": "R",
-    "ruby": "Ruby",
-    "rust": "Rust",
-    "swift": "Swift",
-    "screwdriver": "Beginner",
-    "wrench": "Intermediate",
-    "tools": "Expert"
-}
+[
+    {
+        "emoji":"\ud83e\ude80",
+        "role": "Animation"
+    },
+    {
+        "emoji": "\u26bd",
+        "role": "API"
+    },
+    {
+        "emoji": "\ud83c\udfc0",
+        "role": "App Development"
+    },
+    {
+        "emoji": "\uD83C\uDFC8",
+        "role": "Artificial Intelligence"
+    },
+    {
+        "emoji": "\u26BE",
+        "role": "Business in IT"
+    },
+    {
+        "emoji": "\uD83E\uDD4E",
+        "role": "Blockchain"
+    },
+    {
+        "emoji": "\uD83C\uDFBE",
+        "role": "Cloud Computing"
+    },
+    {
+        "emoji": "\uD83C\uDFD0",
+        "role": "Cyber Security"
+    },
+    {
+        "emoji": "\uD83C\uDFC9",
+        "role": "Data Analytics"
+    },
+    {
+        "emoji": "\uD83E\uDD4F",
+        "role": "Game Development"
+    },
+    {
+        "emoji": "\uD83C\uDFD3",
+        "role": "Multimedia Technology"
+    },
+    {
+        "emoji": "\uD83C\uDFF8",
+        "role": "Software Engineering"
+    },
+    {
+        "emoji": "\uD83E\uDE83",
+        "role": "UX/UI"
+    },
+    {
+        "emoji": "\uE42C",
+        "role": "Web Development"
+    },
+    {
+        "emoji": "c_",
+        "role": "C"
+    },
+    {
+        "emoji": "cpp",
+        "role": "C++"
+    },
+    {
+        "emoji": "csharp",
+        "role": "C#"
+    },
+    {
+        "emoji": "dart",
+        "role": "Dart"
+    },
+    {
+        "emoji": "flutter",
+        "role": "Flutter"
+    },
+    {
+        "emoji": "go",
+        "role": "Go"
+    },
+    {
+        "emoji": "java",
+        "role": "Java"
+    },
+    {
+        "emoji": "javascript",
+        "role": "Javascript"
+    },
+    {
+        "emoji": "kotlin",
+        "role": "Kotlin"
+    },
+    {
+        "emoji": "php",
+        "role": "PHP"
+    },
+    {
+        "emoji": "python",
+        "role": "Python"
+    },
+    {
+        "emoji": "r_",
+        "role": "R"
+    },
+    {
+        "emoji": "ruby",
+        "role": "Ruby"
+    },
+    {
+        "emoji": "rust",
+        "role": "Rust"
+    },  
+    {
+        "emoji": "swift",
+        "role": "Swift"
+    },  
+    {
+        "emoji": "\uD83E\uDE9B",
+        "role": "Beginner"
+    }, 
+    {
+        "emoji": "\uD83D\uDD27",
+        "role": "Intermediate"
+    },  
+    {
+        "emoji": "\uD83D\uDEE0",
+        "role": "Expert"
+    },  
+    {
+        "emoji": "\u2705",
+        "role": "Member"
+    }
+]
