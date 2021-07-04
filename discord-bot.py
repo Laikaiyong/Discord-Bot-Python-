@@ -8,7 +8,6 @@ import youtube_dl
 import os
 import random as rd
 from PIL import Image, ImageFont, ImageDraw
-import emojis
 # import datetime
 
 
