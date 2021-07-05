@@ -76,7 +76,7 @@ async def on_member_join(member):
 
 
 # Reaction Role
-@client.command(alias='rr')
+@client.command(aliases=['rr'])
 async def reactrole(ctx, message: discord.Message, emoji, role: discord.Role):
     if message != None and emoji != None and role != None:
         await message.add_reaction(emoji)
@@ -154,8 +154,8 @@ async def minecraft(ctx, arg):
 
 
 # Inspect users message for prefix manipulation
-@ client.listen('on_message')
-async def prefix(message):
+@ client.event
+async def on_message(message):
 
     # Avoid bot to respond to itself
     if message.author == client.user:
