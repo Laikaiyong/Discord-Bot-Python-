@@ -40,7 +40,7 @@ cluster = MongoClient(os.environ.get('LINK'))
 levelling = cluster["KYGorGorCluster"]["Levelling"]
 
 
-@commands.Cog.listener()
+@client.event
 async def on_message(message):
     if message.channel.id in talk_channels:
         stats = levelling.find_one({"id": message.author.id})
@@ -75,7 +75,7 @@ async def on_message(message):
                             await message.channel.send(embed=embed)
 
 
-@commands.command(aliases=['r'])
+@client.command(aliases=['r'])
 async def rank(ctx):
     if ctx.channel.id in bot_channel:
         stats = levelling.find_one({"id": ctx.author.id})
@@ -116,7 +116,7 @@ async def rank(ctx):
             await ctx.channel.send(embed=embed)
 
 
-@commands.command(aliases=['ldb'])
+@client.command(aliases=['ldb'])
 async def leaderboard(ctx):
     if ctx.channel.id in bot_channel:
         rankings = levelling.find().sort("xp", -1)
@@ -266,8 +266,8 @@ async def minecraft(ctx, arg):
 
 
 # Inspect users message for prefix manipulation
-@ client.event
-async def on_message(message):
+@ client.listen('on_message')
+async def prefix(message):
 
     # Avoid bot to respond to itself
     if message.author == client.user:
