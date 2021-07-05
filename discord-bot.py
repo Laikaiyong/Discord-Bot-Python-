@@ -1,5 +1,4 @@
 import discord
-from discord import player
 from discord.ext import commands
 import json
 import requests
@@ -8,7 +7,9 @@ import youtube_dl
 import os
 import random as rd
 from PIL import Image, ImageFont, ImageDraw
-# import datetime
+import levelsys
+
+cogs = [levelsys]
 
 
 # Prefix set up
@@ -24,6 +25,11 @@ intents = discord.Intents.default()
 intents.members = True
 client = commands.Bot(command_prefix=get_prefix,
                       intents=intents, help_command=None, activity=discord.Activity(type=discord.ActivityType.competing, name="Vandyck#7726 兄ちゃん戦争"))
+
+
+# Leveling system
+for i in range(len(cogs)):
+    cogs[i].setup(client)
 
 
 # Join a new server and set prefix
@@ -79,9 +85,21 @@ async def on_member_join(member):
 
 # Reaction Role
 @client.command()
-async def reactrole(ctx, message: discord.Message, emoji):
-    if message != None and emoji != None:
+async def reactrole(ctx, message: discord.Message, emoji, role: discord.Role):
+    if message != None and emoji != None and role != None:
         await message.add_reaction(emoji)
+
+        with open('reactrole.json') as f:
+            data = json.load(f)
+
+        new = dict()
+        new['emoji'] = emoji.name
+        new['role'] = role
+
+        data.append(new)
+
+        with open('reactrole.json', 'w') as f:
+            json.dump(data, f)
 
     else:
         await ctx.send("Invalid argument. (e.g. ~reactrole message_id :emoji: @role")
