@@ -37,7 +37,7 @@ level_num = [5, 10, 15]
 
 cluster = MongoClient(os.environ.get('LINK'))
 
-levelling = cluster["KYGorGorCluster"]["levelling"]
+levelling = cluster["KYGorGorCluster"]["Levelling"]
 
 
 class levelsys(commands.Cog):
