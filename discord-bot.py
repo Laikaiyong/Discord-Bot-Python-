@@ -143,9 +143,6 @@ class levelsys(commands.Cog):
             await ctx.channel.send(embed=embed)
 
 
-client.add_cog(levelsys(client))
-
-
 # Join a new server and set prefix
 @client.event
 async def on_guild_join(guild):
@@ -666,4 +663,5 @@ async def place_error(ctx, error):
         await ctx.send("Please make sure to enter an integer.")
 
 
+client.add_cog(levelsys(client))
 client.run(os.environ.get('TOKEN'))
