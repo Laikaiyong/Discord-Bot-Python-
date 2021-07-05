@@ -143,8 +143,7 @@ class levelsys(commands.Cog):
             await ctx.channel.send(embed=embed)
 
 
-def setup(client):
-    client.add_cog(levelsys(client))
+client.add_cog(levelsys(client))
 
 
 # Join a new server and set prefix
