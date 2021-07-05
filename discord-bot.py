@@ -83,7 +83,7 @@ class levelsys(commands.Cog):
                                     text='\u200b Behold, the wisdom of activeness')
                                 await message.channel.send(embed=embed)
 
-    @commands.command(aliases='r')
+    @commands.command(alias='r')
     async def rank(self, ctx):
         if ctx.channel.id in bot_channel:
             stats = levelling.find_one({"id": ctx.author.id})
@@ -123,7 +123,7 @@ class levelsys(commands.Cog):
                 embed.set_thumbnail(url=ctx.author.avatar_url)
                 await ctx.channel.send(embed=embed)
 
-    @commands.command(aliases='ldb')
+    @commands.command(alias='ldb')
     async def leaderboard(self, ctx):
         if ctx.channel.id in bot_channel:
             rankings = levelling.find().sort("xp", -1)
@@ -198,7 +198,7 @@ async def on_member_join(member):
 
 
 # Reaction Role
-@client.command()
+@client.command(alias='rr')
 async def reactrole(ctx, message: discord.Message, emoji, role: discord.Role):
     if message != None and emoji != None and role != None:
         await message.add_reaction(emoji)
@@ -353,7 +353,7 @@ async def emote_react(message):
 
 
 # Nominate command
-@ client.command()
+@ client.command(alias='nom')
 async def nominate(message):
     users = [
         member for member in message.channel.members if "bots" not in [y.name.lower() for y in member.roles] and member != str(message.author)]
@@ -507,7 +507,7 @@ async def stop(ctx):
 
 
 # Play music
-@ client.command()
+@ client.command(alias='p')
 async def play(ctx, url: str):
     song = os.path.isfile("song.mp3")
     try:
