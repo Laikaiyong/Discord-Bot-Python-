@@ -231,7 +231,7 @@ async def emote_react(message):
 
 
 # Nominate command
-@ client.command(alias='nom')
+@ client.command(aliases=['nom'])
 async def nominate(message):
     users = [
         member for member in message.channel.members if "bots" not in [y.name.lower() for y in member.roles] and member != str(message.author)]
@@ -385,7 +385,7 @@ async def stop(ctx):
 
 
 # Play music
-@ client.command(alias='p')
+@ client.command(aliases=['p'])
 async def play(ctx, url: str):
     song = os.path.isfile("song.mp3")
     try:
