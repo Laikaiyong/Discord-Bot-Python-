@@ -182,7 +182,7 @@ async def on_message(message):
 
 # Remove vulgar and Respond Greetings
 @ client.listen('on_message')
-async def vulgar_greets(message):
+async def vulgar(message):
     message.content = message.content.lower()
 
     # Avoid bot to respond to itself
@@ -193,34 +193,38 @@ async def vulgar_greets(message):
     rude_words = ["fuck", "sohai", "cibai",
                   "diu", "dick", "boobs", "tits", "ass"]
 
-    # Bot interaction (greetings)
-    greetings = ["hello", "hi", "hey", "henlo", "hai", "sup"]
-
     # Delete inappropriate message
     for rude_word in rude_words:
         if re.search(rf'(\s|^){rude_word}(\b|$)', message.content):
             await message.delete()
         break
 
-    else:
-        for greets in greetings:
-            if re.search(rf'(\s|^){greets}(\b|$)', message.content):
-                mention = message.author.mention
-                greets = greets.capitalize()
 
-                # If sender is creator
-                if str(message.author) == "Vandyck#7726":
-                    await message.channel.send(f"All hail master, {mention}.  \U0001F647")
+# Greets
+@ client.listen('on_message')
+async def vulgar(message):
 
-                # If sender is core member
-                elif "core" in [y.name.lower() for y in message.author.roles]:
+    # Bot interaction (greetings)
+    greetings = ["hello", "hi", "hey", "henlo", "hai", "sup"]
 
-                    await message.channel.send(f"{greets} administrator {mention} .\nI am ready at your service. \U0001F935")
+    message.content = message.content.lower()
 
-                else:
-                    await message.channel.send(f"{greets}, {mention}!")
+    for greets in greetings:
+        if re.search(rf'(\s|^){greets}(\b|$)', message.content):
+            mention = message.author.mention
+            greets = greets.capitalize()
 
-    await client.process_commands(message)
+            # If sender is creator
+            if str(message.author) == "Vandyck#7726":
+                await message.channel.send(f"All hail master, {mention}.  \U0001F647")
+
+            # If sender is core member
+            elif "core" in [y.name.lower() for y in message.author.roles]:
+
+                await message.channel.send(f"{greets} administrator {mention} .\nI am ready at your service. \U0001F935")
+
+            else:
+                await message.channel.send(f"{greets}, {mention}!")
 
 
 # React to specific message
