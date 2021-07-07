@@ -77,7 +77,7 @@ async def on_member_join(member):
 
     for channel in member.guild.channels:
         if channel.name.startswith('Peep'):
-            await channel.edit(name=f'Peep: {len(client.user)}')
+            await channel.edit(name=f'Peep: {sum(client.user)}')
             break
 
 
