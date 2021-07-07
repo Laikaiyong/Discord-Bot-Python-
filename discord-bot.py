@@ -77,7 +77,7 @@ async def on_member_join(member):
 
     for channel in member.guild.channels:
         if channel.name.startswith('Peep'):
-            await channel.edit(name=f'Peep: {len([m for m in client.guild.member if not m.bot])}')
+            await channel.edit(name=f'Peep: {str(member.guild.member_count)}')
             break
 
 
