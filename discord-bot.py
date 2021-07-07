@@ -54,7 +54,7 @@ async def settings(ctx, prefix):
 
 # Welcome Card
 @client.event
-async def on_member_join(member):
+async def on_member_join(member, ctx):
     guild = client.get_guild(852085478659457035)
     channel = guild.get_channel(852085478659457042)
     member_count = guild.member_count
@@ -77,7 +77,7 @@ async def on_member_join(member):
 
     for channel in member.guild.channels:
         if channel.name.startswith('Peep'):
-            await channel.edit(name=f'Peep: {sum(client.user)}')
+            await channel.edit(name=f'Peep: {len([m for m in ctx.guild.member if not m.bot])}')
             break
 
 
