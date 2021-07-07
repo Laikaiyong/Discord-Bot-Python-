@@ -75,6 +75,11 @@ async def on_member_join(member):
 
     await channel.send(f"Welcome to the server {member.mention}! :partying_face:\n:one: Check out <#{852088286922801193}> to redeem membership :white_check_mark:\n:two: Stay updated on events in <#{856440780164169738}> :fireworks:\n:three: Customize your unique role in <#{852111666716213258}> :scroll:\n:four: Get useful resources in <#{852101645836091472}> on your developing journey :person_climbing:\n", file=discord.File("new.png"))
 
+    for channel in member.guild.channels:
+        if channel.name.startswith('Peep'):
+            await channel.edit(name=f'Peep: {len(client.user)}')
+            break
+
 
 # Reaction Role
 @client.command(aliases=['rr'])
