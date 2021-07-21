@@ -25,6 +25,12 @@ client = commands.Bot(command_prefix=get_prefix,
                       intents=intents, help_command=None, activity=discord.Activity(type=discord.ActivityType.competing, name="Vandyck#7726 兄ちゃん戦争"))
 
 
+# Check ping latency
+@client.command()
+async def ping(ctx):
+    await ctx.send(f'Pong! {client.latency}')
+
+
 # Join a new server and set prefix
 @client.event
 async def on_guild_join(guild):
