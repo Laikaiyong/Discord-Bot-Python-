@@ -90,6 +90,36 @@ async def on_member_leave(member):
             break
 
 
+# Kick users who are not obey the rules
+@client.command()
+async def kick(ctx, member: discord.Member, *, reason=None):
+    if ctx.author.guild_permissions.kick_members:
+        await member.kick(reason=reason)
+        embed = discord.Embed(
+            title="Kick",
+            description=f"**{member}** was kicked.",
+            color=discord.Color.red()
+        )
+        embed.set_thumbnail(url=member.avatar_url)
+        embed.add_field(name="Reason", value=f"{reason}")
+        await ctx.send(embed=embed)
+
+
+# Ban users who are not obey the rules
+@client.command()
+async def ban(ctx, member: discord.Member, *, reason=None):
+    if ctx.author.guild_permissions.ban_members:
+        await member.ban(reason=reason)
+        embed = discord.Embed(
+            title="Ban",
+            description=f"**{member}** was banned.",
+            color=discord.Color.red()
+        )
+        embed.set_thumbnail(url=member.avatar_url)
+        embed.add_field(name="Reason", value=f"{reason}")
+        await ctx.send(embed=embed)
+
+
 # Reaction Role
 @client.command(aliases=['rr'])
 async def reactrole(ctx, message: discord.Message, emoji, role: discord.Role):
