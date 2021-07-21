@@ -130,5 +130,9 @@
     {
         "emoji": "\u2705",
         "role": "Member"
+    },
+    {
+        "emoji": "\uD83C\uDFD2",
+        "role": "Internet of Things"
     }
 ]
