@@ -28,7 +28,7 @@ client = commands.Bot(command_prefix=get_prefix,
 # Check ping latency
 @client.command()
 async def ping(ctx):
-    await ctx.send(f'Pong! {client.latency}ms')
+    await ctx.send(f'Pong! {round(client.latency * 1000)}ms')
 
 
 # Join a new server and set prefix
