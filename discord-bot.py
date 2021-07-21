@@ -81,6 +81,15 @@ async def on_member_join(member):
             break
 
 
+# Recount member count
+@client.event
+async def on_member_leave(member):
+    for channel in member.guild.channels:
+        if channel.name.startswith('Peep'):
+            await channel.edit(name=f'Peep: {str(member.guild.member_count)}')
+            break
+
+
 # Reaction Role
 @client.command(aliases=['rr'])
 async def reactrole(ctx, message: discord.Message, emoji, role: discord.Role):
