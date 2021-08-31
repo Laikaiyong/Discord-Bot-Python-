@@ -11,6 +11,8 @@ class Main(commands.Cog):
 
     def __init__(self, client):
         self.client = client
+        self.react_messages = [
+            860140723131252786, 860140829100343306, 860046847519621180, 856834763545378836]
 
     # Prefix set up
     def get_prefix(self, message):
