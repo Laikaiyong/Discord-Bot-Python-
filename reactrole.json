@@ -1,6 +1,6 @@
 [
     {
-        "emoji":"\ud83e\ude80",
+        "emoji": "\ud83e\ude80",
         "role": "Animation"
     },
     {
@@ -110,23 +110,23 @@
     {
         "emoji": "rust",
         "role": "Rust"
-    },  
+    },
     {
         "emoji": "swift",
         "role": "Swift"
-    },  
+    },
     {
         "emoji": "\uD83E\uDE9B",
         "role": "Beginner"
-    }, 
+    },
     {
         "emoji": "\uD83D\uDD27",
         "role": "Intermediate"
-    },  
+    },
     {
         "emoji": "\ud83d\udee0\ufe0f",
         "role": "Expert"
-    },  
+    },
     {
         "emoji": "\u2705",
         "role": "Member"
@@ -134,5 +134,9 @@
     {
         "emoji": "\uD83C\uDFD2",
         "role": "Internet of Things"
+    }
+    {
+        "emoji": "🥍",
+        "role": "Networking"
     }
 ]
