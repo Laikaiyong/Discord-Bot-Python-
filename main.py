@@ -211,14 +211,10 @@ class Main(commands.Cog):
         else:
             await ctx.send("Invalid argument.")
 
-    # Reaction check
+    # React role
     @commands.Cog.listener("on_raw_reaction_add")
-    async def apply_role(self, payload):
-
-        if payload.member.bot:
-            pass
-
-        elif int(payload.message_id) in [860046847519621180, 860140723131252786, 860140829100343306, 856834763545378836]:
+    async def add_role(self, payload):
+        if int(payload.message_id) in self.react_messages:
             guild_id = payload.guild_id
             guild = discord.utils.find(
                 lambda g: g.id == guild_id, self.client.guilds)
@@ -234,8 +230,7 @@ class Main(commands.Cog):
 
     @commands.Cog.listener("on_raw_reaction_remove")
     async def remove_role(self, payload):
-
-        if int(payload.message_id) in [860046847519621180, 860140723131252786, 860140829100343306, 856834763545378836]:
+        if int(payload.message_id) in self.react_messages:
             guild_id = payload.guild_id
             guild = discord.utils.find(
                 lambda g: g.id == guild_id, self.client.guilds)
@@ -340,7 +335,7 @@ class Main(commands.Cog):
     # Client Server dashboard command
 
     @commands.command()
-    async def server(ctx):
+    async def server(self, ctx):
         name = str(ctx.guild.name)
         id = str(ctx.guild.id)
         icon = str(ctx.guild.icon_url)
