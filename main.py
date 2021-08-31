@@ -277,11 +277,11 @@ class Main(commands.Cog):
         rude_words = ["fuck", "sohai", "cibai",
                       "diu", "dick", "boobs", "tits", "ass", "booty"]
 
-        # Delete inappropriate message
-        for rude_word in rude_words:
-            if re.search(rf'(\s|^){rude_word}(\b|$)', message.content):
-                await message.delete()
-            break
+        if not message.author.bot:
+            for rude_word in rude_words:
+                if re.search(rf'(\s|^){rude_word}(\b|$)', message.content):
+                    await message.delete()
+                break
 
     # Greets
     @commands.Cog.listener('on_message')
