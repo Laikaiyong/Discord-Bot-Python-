@@ -92,19 +92,14 @@ class Main(commands.Cog):
             return
 
         # Prefix manipulation
-        try:
+        if message.mentions[0] == self.client.user:
 
-            if message.mentions[0] == self.client.user:
+            with open("prefixes.json", "r") as read:
+                prefixes = json.load(read)
 
-                with open("prefixes.json", "r") as read:
-                    prefixes = json.load(read)
+            pre = prefixes[str(message.guild.id)]
 
-                pre = prefixes[str(message.guild.id)]
-
-                await message.channel.send(f"My prefix for {message.guild.name} is now {pre}.")
-
-        except:
-            pass
+            await message.channel.send(f"My prefix for {message.guild.name} is now {pre}.")
 
     # Welcome Card
     @commands.Cog.listener("on_member_join")
