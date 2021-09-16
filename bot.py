@@ -3,8 +3,11 @@ from discord.ext import commands
 import os
 import main
 import modmail
+import levelsys
+import music
+import game
 
-cogs = [main, modmail]
+cogs = [main, modmail, levelsys, music, game]
 
 intents = discord.Intents.default()
 intents.members = True
